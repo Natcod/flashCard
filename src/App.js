@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-// const initialFlash = [
-//   {
-//     id: 1,
-//     question: "which operating system is the best",
-//     answer: "only",
-//   },
-//   {
-//     id: 2,
-//     question: "  is the best",
-//     answer: "ows",
-//   },
-//   {
-//     id: 3,
-//     question: "which ohe best",
-//     answer: "dows",
-//   },
-//   {
-//     id: 4,
-//     question: "is the ",
-//     answer: "win",
-//   },
-// ];
+const initialFlash = [
+  {
+    id: 1,
+    question: "which operating system is the best",
+    answer: "ofcourse Windows😁😁😁",
+  },
+];
 const getStoredFlashcards = () => {
   const storedFlashcards = localStorage.getItem("flashcards");
   return storedFlashcards ? JSON.parse(storedFlashcards) : [];
