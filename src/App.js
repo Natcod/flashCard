@@ -63,14 +63,14 @@ export default function App() {
   }
 
   function handleDisplay() {
-    const currentSlide = cards[currentCardIndex];
-
     return (
       <div className="flashcard">
         <div className="slider">
           <div className="slide__text">
             <span>
-              {displayQuestion ? currentSlide.question : currentSlide.answer}
+              {displayQuestion
+                ? cards[currentCardIndex].question
+                : cards[currentCardIndex].answer}
             </span>
           </div>
         </div>
