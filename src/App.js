@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-const initialFlash = [
-  {
-    id: 1,
-    question: "which operating system is the best",
-    answer: "ofcourse Windows😁😁😁",
-  },
-];
 const getStoredFlashcards = () => {
   const storedFlashcards = localStorage.getItem("flashcards");
   return storedFlashcards ? JSON.parse(storedFlashcards) : [];
@@ -63,14 +56,24 @@ export default function App() {
   }
 
   function handleDisplay() {
+    if (cards.length === 0) {
+      return (
+        <div className="flashcard">
+          <p>No flashcards available. Add new cards!</p>
+          <button className="btn" onClick={handleNewCard}>
+            Add New Card
+          </button>
+        </div>
+      );
+    }
+
+    const currentSlide = cards[currentCardIndex];
     return (
       <div className="flashcard">
         <div className="slider">
           <div className="slide__text">
             <span>
-              {displayQuestion
-                ? cards[currentCardIndex].question
-                : cards[currentCardIndex].answer}
+              {displayQuestion ? currentSlide.question : currentSlide.answer}
             </span>
           </div>
         </div>
