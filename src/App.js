@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+// const initialFlash = [
+//   {
+//     id: 1,
+//     question: "What do you want",
+//     answer: "don know",
+//   },
+// ];
+
 const getStoredFlashcards = () => {
   const storedFlashcards = localStorage.getItem("flashcards");
   return storedFlashcards ? JSON.parse(storedFlashcards) : [];
@@ -38,6 +46,14 @@ export default function App() {
   function handleNewCard(e) {
     e.preventDefault();
     SetAddCard(!addCard);
+    setQuestion("");
+    setAnswer("");
+
+    console.log("working");
+  }
+  function handleNewCards(e) {
+    SetAddCard(!addCard);
+    displayForm();
   }
   function handleSubmit(e) {
     e.preventDefault();
@@ -54,15 +70,43 @@ export default function App() {
     // handleDisplay();
     // setDisplayQuestion(true);
   }
+  function displayForm() {
+    return (
+      <form
+        className={`modal ${addCard ? "hidden" : ""}`}
+        onSubmit={handleSubmit}
+      >
+        <button class="close-modal" onClick={handleNewCard}>
+          &times;
+        </button>
+        <div>
+          <label>Question</label>{" "}
+          <input
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+          />
+        </div>
+        <br></br>
+        <div>
+          <label>Answer</label>{" "}
+          <input
+            type="text"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+          />
+        </div>
+        <input type="submit" value="Add" />
+      </form>
+    );
+  }
 
   function handleDisplay() {
-    if (cards.length === 0) {
+    if (cards.length === 0 && addCard) {
       return (
         <div className="flashcard">
           <p>No flashcards available. Add new cards!</p>
-          <button className="btn" onClick={handleNewCard}>
-            Add New Card
-          </button>
+          <button onClick={handleNewCards}>new</button>
         </div>
       );
     }
@@ -73,7 +117,11 @@ export default function App() {
         <div className="slider">
           <div className="slide__text">
             <span>
-              {displayQuestion ? currentSlide.question : currentSlide.answer}
+              {addCard && displayQuestion
+                ? displayQuestion
+                  ? currentSlide.question
+                  : currentSlide.answer
+                : ""}
             </span>
           </div>
         </div>
@@ -90,35 +138,11 @@ export default function App() {
           </button>
           <button onClick={handleNewCard}>new</button>
         </div>
-        <form
-          className={`modal ${addCard ? "hidden" : ""}`}
-          onSubmit={handleSubmit}
-        >
-          <button class="close-modal" onClick={handleNewCard}>
-            &times;
-          </button>
-          <div>
-            <label>Question</label>{" "}
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-          </div>
-          <br></br>
-          <div>
-            <label>Answer</label>{" "}
-            <input
-              type="text"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-          </div>
-          <input type="submit" value="Add" />
-        </form>
+        {displayForm()}
         <div className={`overlay ${addCard ? "hidden" : ""}`}></div>
       </div>
     );
   }
+
   return handleDisplay();
 }
