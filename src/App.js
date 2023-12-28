@@ -8,21 +8,22 @@ import React, { useState, useEffect } from "react";
 //   },
 // ];
 
-const getStoredFlashcards = () => {
-  const storedFlashcards = localStorage.getItem("flashcards");
+const getStoredFlashcard = () => {
+  const storedFlashcards = localStorage.getItem("flashcard");
+
   return storedFlashcards ? JSON.parse(storedFlashcards) : [];
 };
 
 export default function App() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [displayQuestion, setDisplayQuestion] = useState(true);
-  const [cards, setCards] = useState(getStoredFlashcards());
+  const [cards, setCards] = useState(getStoredFlashcard());
   const [addCard, SetAddCard] = useState(true);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("flashcards", JSON.stringify(cards));
+    localStorage.setItem("flashcard", JSON.stringify(cards));
   }, [cards]);
 
   function handleFlip() {
@@ -117,7 +118,7 @@ export default function App() {
         <div className="slider">
           <div className="slide__text">
             <span>
-              {addCard && displayQuestion
+              {addCard
                 ? displayQuestion
                   ? currentSlide.question
                   : currentSlide.answer
