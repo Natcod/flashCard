@@ -1,30 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-// const initialFlash = [
-//   {
-//     id: 1,
-//     question: "What do you want",
-//     answer: "don know",
-//   },
-// ];
-
-const getStoredFlashcard = () => {
-  const storedFlashcards = localStorage.getItem("flashcard");
-
-  return storedFlashcards ? JSON.parse(storedFlashcards) : [];
-};
-
 export default function App() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [displayQuestion, setDisplayQuestion] = useState(true);
-  const [cards, setCards] = useState(getStoredFlashcard());
   const [addCard, SetAddCard] = useState(true);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
-  useEffect(() => {
-    localStorage.setItem("flashcard", JSON.stringify(cards));
-  }, [cards]);
+  const [cards, setCards] = useState(function () {
+    const storedFlashcards = localStorage.getItem("flashcard");
+
+    return storedFlashcards ? JSON.parse(storedFlashcards) : [];
+  });
 
   function handleFlip() {
     setDisplayQuestion(!displayQuestion);
@@ -49,8 +36,6 @@ export default function App() {
     SetAddCard(!addCard);
     setQuestion("");
     setAnswer("");
-
-    console.log("working");
   }
   function handleNewCards(e) {
     SetAddCard(!addCard);
@@ -71,6 +56,14 @@ export default function App() {
     // handleDisplay();
     // setDisplayQuestion(true);
   }
+  function handleDelete() {
+    setCards((card) =>
+      card.filter((index) => index.id !== cards[currentCardIndex].id)
+    );
+  }
+  useEffect(() => {
+    localStorage.setItem("flashcard", JSON.stringify(cards));
+  }, [cards]);
   function displayForm() {
     return (
       <form
@@ -138,6 +131,7 @@ export default function App() {
             {displayQuestion ? `Answer` : `Question`}
           </button>
           <button onClick={handleNewCard}>new</button>
+          <button onClick={handleDelete}>delete</button>
         </div>
         {displayForm()}
         <div className={`overlay ${addCard ? "hidden" : ""}`}></div>
